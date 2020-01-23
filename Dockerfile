@@ -45,7 +45,7 @@ cd ..
 RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.9.1 && \
 mkdir build-mingw64-pcl && \
 cd build-mingw64-pcl && \
-mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE && \
+mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine && \
 ninja && \
 ninja install && \
 cd ..
