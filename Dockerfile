@@ -37,7 +37,7 @@ RUN git clone https://github.com/mariusmuja/flann flann --branch 1.9.1
 
 RUN mkdir build-mingw64-flann && \
 cd build-mingw64-flann && \
-mingw64-cmake ../flann -GNinja -DBUILD_PYTHON_BINDINGS=FALSE -DBUILD_MATLAB_BINDINGS=FALSE -DBUILD_EXAMPLES=FALSE -DBUILD_DOC=FALSE -DBUILD_TESTS=FALSE -DUSE_OPENMP=FALSE && \
+mingw64-cmake ../flann -GNinja -DBUILD_SHARED=TRUE -DBUILD_PYTHON_BINDINGS=FALSE -DBUILD_MATLAB_BINDINGS=FALSE -DBUILD_EXAMPLES=FALSE -DBUILD_DOC=FALSE -DBUILD_TESTS=FALSE -DUSE_OPENMP=FALSE && \
 ninja && \
 ninja install && \
 cd ..
