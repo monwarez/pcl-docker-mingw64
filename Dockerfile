@@ -53,12 +53,14 @@ RUN dnf install -y autoconf
 RUN dnf install -y automake
 RUN dnf install -y libtool
 
+RUN dnf install -y make
+
 RUN git clone https://github.com/open-mpi/hwloc hwloc --branch hwloc-2.0.4 && \
 cd hwloc && \
 ./autogen.sh && \
 mingw64-configure --disable-dependency-tracking && \
 make && \
-make install && \
+make install | true && \
 cd ..
 
 
