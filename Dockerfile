@@ -46,12 +46,20 @@ RUN dnf install -y mingw64-libgomp
 
 RUN dnf install -y mingw64-libpng
 RUN dnf install -y mingw64-libtiff
+RUN dnf install -y mingw64-wpcap
+RUN dnf install -y mingw64-expat
+
+RUN dnf install -y autoconf
+RUN dnf install -y automake
+RUN dnf install -y libtool
 
 RUN git clone https://github.com/open-mpi/hwloc hwloc --branch hwloc-2.0.4 && \
 cd hwloc && \
-mingw64-configure && \
+./autogen.sh && \
+mingw64-configure --disable-dependency-tracking && \
 make && \
-make install
+make install && \
+cd ..
 
 
 #RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.9.1 && \
