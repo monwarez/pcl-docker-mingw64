@@ -63,6 +63,17 @@ make && \
 make install | true && \
 cd ..
 
+RUN cp hwloc/hwloc.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
+RUN cp hwloc/netloc.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
+RUN cp hwloc/netlocscotch.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
+
+RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0 && \
+mkdir build-mingw64-hpx && \
+cd build-mingw64-hpx && \
+mingw64-cmake ../hpx -GNinja && \
+ninja && \
+ninja install && \
+cd ..
 
 #RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.9.1 && \
 #mkdir build-mingw64-pcl && \
@@ -73,10 +84,3 @@ cd ..
 #cd ..
 
 
-#RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.9 && \
-#mkdir build-mingw64-hpx && \
-#cd build-mingw64-hpx && \
-#mingw64-cmake ../hpx -GNinja && \
-#ninja && \
-#ninja install && \
-#cd ..
