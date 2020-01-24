@@ -44,19 +44,24 @@ cd ..
 
 RUN dnf install -y mingw64-libgomp
 
-RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.9.1 && \
-mkdir build-mingw64-pcl && \
-cd build-mingw64-pcl && \
-mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine && \
-ninja && \
-ninja install && \
-cd ..
+RUN dnf install -y mingw64-libpng
+RUN dnf install -y mingw64-libtiff
 
-#RUN git clone https://github.com/open-mpi/hwloc hwloc --branch hwloc-2.0.4 && \
-#cd hwloc && \
-#mingw64-configure && \
-#make && \
-#make install
+RUN git clone https://github.com/open-mpi/hwloc hwloc --branch hwloc-2.0.4 && \
+cd hwloc && \
+mingw64-configure && \
+make && \
+make install
+
+
+#RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.9.1 && \
+#mkdir build-mingw64-pcl && \
+#cd build-mingw64-pcl && \
+#mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine && \
+#ninja && \
+#ninja install && \
+#cd ..
+
 
 #RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.9 && \
 #mkdir build-mingw64-hpx && \
