@@ -33,6 +33,7 @@ ninja && \
 ninja install && \
 cd ..
 
+
 RUN git clone https://github.com/mariusmuja/flann flann --branch 1.9.1
 
 RUN mkdir build-mingw64-flann && \
@@ -67,18 +68,21 @@ RUN cp hwloc/hwloc.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 RUN cp hwloc/netloc.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 RUN cp hwloc/netlocscotch.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 
-RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0 && \
-mkdir build-mingw64-hpx && \
-cd build-mingw64-hpx && \
-mingw64-cmake ../hpx -GNinja && \
+COPY CGAL.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
+
+RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.9.1
+COPY low_level_io.h pcl/io/include/pcl/io/
+RUN mkdir build-mingw64-pcl && \
+cd build-mingw64-pcl && \
+mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine && \
 ninja && \
 ninja install && \
 cd ..
 
-#RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.9.1 && \
-#mkdir build-mingw64-pcl && \
-#cd build-mingw64-pcl && \
-#mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine && \
+#RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0 && \
+#mkdir build-mingw64-hpx && \
+#cd build-mingw64-hpx && \
+#HWLOC_ROOT=/usr/x86_64-w64-mingw32/sys-root/mingw/ mingw64-cmake ../hpx -GNinja && \
 #ninja && \
 #ninja install && \
 #cd ..
