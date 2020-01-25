@@ -25,24 +25,6 @@ RUN dnf -y install mingw64-xerces-c
 RUN dnf -y install mingw64-gmp
 RUN dnf -y install mingw64-mpfr
 
-RUN git clone https://github.com/CGAL/cgal cgal --branch releases/CGAL-4.14.2 && \
-mkdir build-mingw64-cgal && \
-cd build-mingw64-cgal && \
-mingw64-cmake ../cgal -GNinja -DWITH_CGAL_QT5=OFF -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine && \
-ninja && \
-ninja install && \
-cd ..
-
-
-RUN git clone https://github.com/mariusmuja/flann flann --branch 1.9.1
-
-RUN mkdir build-mingw64-flann && \
-cd build-mingw64-flann && \
-mingw64-cmake ../flann -GNinja -DBUILD_SHARED=TRUE -DBUILD_PYTHON_BINDINGS=FALSE -DBUILD_MATLAB_BINDINGS=FALSE -DBUILD_EXAMPLES=FALSE -DBUILD_DOC=FALSE -DBUILD_TESTS=FALSE -DUSE_OPENMP=FALSE && \
-ninja && \
-ninja install && \
-cd ..
-
 RUN dnf install -y mingw64-libgomp
 
 RUN dnf install -y mingw64-libpng
@@ -56,8 +38,29 @@ RUN dnf install -y libtool
 
 RUN dnf install -y make
 
-RUN git clone https://github.com/open-mpi/hwloc hwloc --branch hwloc-2.0.4 && \
-cd hwloc && \
+RUN git clone https://github.com/CGAL/cgal cgal --branch releases/CGAL-4.14.2
+RUN mkdir build-mingw64-cgal && \
+cd build-mingw64-cgal && \
+mingw64-cmake ../cgal -GNinja -DWITH_CGAL_QT5=OFF -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine && \
+ninja && \
+ninja install && \
+cd ..
+
+COPY CGAL.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
+
+
+RUN git clone https://github.com/mariusmuja/flann flann --branch 1.9.1
+
+RUN mkdir build-mingw64-flann && \
+cd build-mingw64-flann && \
+mingw64-cmake ../flann -GNinja -DBUILD_SHARED=TRUE -DBUILD_PYTHON_BINDINGS=FALSE -DBUILD_MATLAB_BINDINGS=FALSE -DBUILD_EXAMPLES=FALSE -DBUILD_DOC=FALSE -DBUILD_TESTS=FALSE -DUSE_OPENMP=FALSE && \
+ninja && \
+ninja install && \
+cd ..
+
+
+RUN git clone https://github.com/open-mpi/hwloc hwloc --branch hwloc-2.0.4
+RUN cd hwloc && \
 ./autogen.sh && \
 mingw64-configure --disable-dependency-tracking && \
 make && \
@@ -68,13 +71,15 @@ RUN cp hwloc/hwloc.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 RUN cp hwloc/netloc.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 RUN cp hwloc/netlocscotch.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 
-COPY CGAL.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 
-RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.9.1
+RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.10.0
 COPY low_level_io.h pcl/io/include/pcl/io/
+COPY common_headers.h pcl/common/include/pcl/common
+COPY bearing_angle_image.cpp pcl/common/src
+COPY common.h pcl/common/include/pcl/common
 RUN mkdir build-mingw64-pcl && \
 cd build-mingw64-pcl && \
-mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine && \
+mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release && \
 ninja && \
 ninja install && \
 cd ..
