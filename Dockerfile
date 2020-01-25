@@ -77,9 +77,10 @@ COPY low_level_io.h pcl/io/include/pcl/io/
 COPY common_headers.h pcl/common/include/pcl/common
 COPY bearing_angle_image.cpp pcl/common/src
 COPY common.h pcl/common/include/pcl/common
+COPY sac.h pcl/sample_consensus/include/pcl/sample_consensus
 RUN mkdir build-mingw64-pcl && \
 cd build-mingw64-pcl && \
-mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release && \
+CXXFLAGS="-DM_PI=3.14159265358979323846" CFLAGS="-DM_PI=3.14159265358979323846" mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release && \
 ninja && \
 ninja install && \
 cd ..
