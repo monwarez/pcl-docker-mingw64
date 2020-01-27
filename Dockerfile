@@ -73,6 +73,21 @@ RUN cp hwloc/netlocscotch.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfi
 
 
 RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.10.0
+
+RUN git clone https://github.com/g-truc/glm glm --branch 0.9.9.3
+
+RUN mkdir build-mingw64-glm && \
+cd build-mingw64-glm && \
+mingw64-cmake ../glm -GNinja -DGLM_TEST_ENABLE=OFF -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release && \
+ninja && \
+ninja install | true && \
+cd .. && \
+rm -rf build-mingw64-glm
+
+COPY glm.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
+
+
+
 COPY low_level_io.h pcl/io/include/pcl/io/
 COPY common_headers.h pcl/common/include/pcl/common
 COPY bearing_angle_image.cpp pcl/common/src
@@ -81,12 +96,15 @@ COPY sac.h pcl/sample_consensus/include/pcl/sample_consensus
 COPY pcd_grabber.cpp pcl/io/src
 COPY hdl_grabber.h pcl/io/include/pcl/io
 COPY io/CMakeLists.txt pcl/io
+COPY boundary.h pcl/features/include/pcl/features
+
 RUN mkdir build-mingw64-pcl && \
 cd build-mingw64-pcl && \
-mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release && \
+mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=FALSE && \
 ninja && \
 ninja install && \
-cd ..
+cd .. && \
+rm -rf build-mingw64-pcl
 
 #RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0 && \
 #mkdir build-mingw64-hpx && \
