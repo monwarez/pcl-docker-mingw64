@@ -98,6 +98,17 @@ COPY hdl_grabber.h pcl/io/include/pcl/io
 COPY io/CMakeLists.txt pcl/io
 COPY boundary.h pcl/features/include/pcl/features
 COPY moment_of_inertia_estimation.h pcl/features/include/pcl/features
+COPY auxiliary.h pcl/recognition/include/pcl/recognition/ransac_based
+COPY obj_rec_ransac.h pcl/recognition/include/pcl/recognition/ransac_based
+COPY region_growing.h pcl/segmentation/include/pcl/segmentation
+COPY permutohedral.h pcl/ml/include/pcl/ml
+COPY metrics.h pcl/apps/3d_rec_framework/include/pcl/apps/3d_rec_framework/utils
+COPY file_io.h pcl/io/include/pcl/io
+COPY auto_io.h pcl/io/include/pcl/io
+COPY entropy_range_coder.h pcl/io/include/pcl/compression
+COPY eigen.h pcl/common/include/pcl/common
+COPY pcl_macros.h pcl/common/include/pcl
+COPY bearing_angle_image.h pcl/common/include/pcl/range_image
 
 RUN mkdir build-mingw64-pcl && \
 cd build-mingw64-pcl && \
