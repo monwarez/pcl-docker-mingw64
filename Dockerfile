@@ -97,6 +97,7 @@ COPY pcd_grabber.cpp pcl/io/src
 COPY hdl_grabber.h pcl/io/include/pcl/io
 COPY io/CMakeLists.txt pcl/io
 COPY boundary.h pcl/features/include/pcl/features
+COPY moment_of_inertia_estimation.h pcl/features/include/pcl/features
 
 RUN mkdir build-mingw64-pcl && \
 cd build-mingw64-pcl && \
