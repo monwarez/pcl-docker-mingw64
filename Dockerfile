@@ -116,6 +116,7 @@ COPY spin_image.hpp pcl/features/include/features/impl
 COPY 3dsc.hpp pcl/features/include/pcl/features/impl
 COPY angles.hpp pcl/common/include/pcl/common/impl
 
+COPY CMakeLists.txt pcl
 RUN mkdir build-mingw64-pcl && \
 cd build-mingw64-pcl && \
 mingw64-cmake ../pcl -GNinja -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release -DBUILD_TOOLS=FALSE && \
