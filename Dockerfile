@@ -109,6 +109,12 @@ COPY entropy_range_coder.h pcl/io/include/pcl/compression
 COPY eigen.h pcl/common/include/pcl/common
 COPY pcl_macros.h pcl/common/include/pcl
 COPY bearing_angle_image.h pcl/common/include/pcl/range_image
+COPY ndt_2d.hpp pcl/registration/include/pcl/registration/impl
+COPY min_cut_segmentation.hpp pcl/segmentation/include/pcl/segmentation/impl
+COPY region_growing.hpp pcl/segmentation/include/pcl/segmentation/impl
+COPY spin_image.hpp pcl/features/include/features/impl
+COPY 3dsc.hpp pcl/features/include/pcl/features/impl
+COPY angles.hpp pcl/common/include/pcl/common/impl
 
 RUN mkdir build-mingw64-pcl && \
 cd build-mingw64-pcl && \
