@@ -117,20 +117,37 @@ COPY 3dsc.hpp pcl/features/include/pcl/features/impl
 COPY angles.hpp pcl/common/include/pcl/common/impl
 
 COPY CMakeLists.txt pcl
-RUN mkdir build-mingw64-pcl && \
-cd build-mingw64-pcl && \
-mingw64-cmake ../pcl -GNinja -DCMAKE_CXX_VISIBILITY_PRESET=hidden -DCMAKE_C_VISIBILITY_PRESET=hidden -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_TOOLS=FALSE && \
-ninja && \
-ninja install && \
-cd .. && \
-rm -rf build-mingw64-pcl
 
-#RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0 && \
-#mkdir build-mingw64-hpx && \
-#cd build-mingw64-hpx && \
-#HWLOC_ROOT=/usr/x86_64-w64-mingw32/sys-root/mingw/ mingw64-cmake ../hpx -GNinja && \
+RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0
+
+
+RUN cp hwloc/include/*.h /usr/x86_64-w64-mingw32/sys-root/mingw/include
+RUN cp -r hwloc/include/hwloc /usr/x86_64-w64-mingw32/sys-root/mingw/include
+RUN cp hwloc/hwloc/.libs/*.dll /usr/x86_64-w64-mingw32/sys-root/mingw/lib
+RUN cp hwloc/hwloc/.libs/*.dll.a /usr/x86_64-w64-mingw32/sys-root/mingw/lib
+
+COPY hpx/util/plugin/detail/dll_windows.hpp hpx/hpx/util/plugin/detail
+
+#use binary pcl
+
+COPY binary_pcl /usr/x86_64-w64-mingw32/sys-root/mingw
+
+#RUN mkdir build-mingw64-pcl && \
+#cd build-mingw64-pcl && \
+#mingw64-cmake ../pcl -GNinja -DCMAKE_CXX_VISIBILITY_PRESET=hidden -DCMAKE_C_VISIBILITY_PRESET=hidden -DPCL_SHARED_LIBS=TRUE -DWITH_LIBUSB=FALSE -DWITH_VTK=FALSE -DWITH_QT=FALSE -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_TOOLS=FALSE && \
 #ninja && \
 #ninja install && \
-#cd ..
+#cd .. && \
+#rm -rf build-mingw64-pcl
+
+#RUN mkdir build-mingw64-hpx && \
+#cd build-mingw64-hpx && \
+#mingw64-cmake ../hpx -GNinja -DHPX_MINGW=TRUE -DHWLOC_ROOT=/usr/x86_64-w64-mingw32/sys-root/mingw/ -DHWLOC_LIBRARY=/usr/x86_64-w64-mingw32/sys-root/mingw/lib -DHWLOC_INCLUDE_DIR=/usr/x86_64-w64-mingw32/sys-root/mingw/include -DHPX_WITH_EXAMPLES=OFF -DHPX_WITH_TESTS=OFF -DHPX_WITH_TESTS_BENCHMARKS=OFF -DHPX_WITH_TESTS_REGRESSIONS=OFF -DHPX_WITH_TESTS_UNIT=OFF -DHPX_WITH_TESTS_EXTERNAL_BUILD=OFF -DHPX_WITH_TESTS_EXAMPLES=OFF -DHPX_WITH_COMPILE_ONLY_TESTS=OFF -DHPX_WITH_FAIL_COMPILE_TESTS=OFF && \
+#ninja && \
+#ninja install && \
+#cd .. && \
+#rm -rf build-mingw64-hpx
+
+
 
 
