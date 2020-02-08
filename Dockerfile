@@ -84,53 +84,60 @@ ninja install | true && \
 cd .. && \
 rm -rf build-mingw64-glm
 
+RUN rm -rf glm
+RUN rm -rf pcl
+RUN rm -rf cgal
+RUN rm -rf build-mingw64-cgal
+
 COPY glm.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 
 
 
-COPY low_level_io.h pcl/io/include/pcl/io/
-COPY common_headers.h pcl/common/include/pcl/common
-COPY bearing_angle_image.cpp pcl/common/src
-COPY common.h pcl/common/include/pcl/common
-COPY sac.h pcl/sample_consensus/include/pcl/sample_consensus
-COPY pcd_grabber.cpp pcl/io/src
-COPY hdl_grabber.h pcl/io/include/pcl/io
-COPY io/CMakeLists.txt pcl/io
-COPY boundary.h pcl/features/include/pcl/features
-COPY moment_of_inertia_estimation.h pcl/features/include/pcl/features
-COPY auxiliary.h pcl/recognition/include/pcl/recognition/ransac_based
-COPY obj_rec_ransac.h pcl/recognition/include/pcl/recognition/ransac_based
-COPY region_growing.h pcl/segmentation/include/pcl/segmentation
-COPY permutohedral.h pcl/ml/include/pcl/ml
-COPY metrics.h pcl/apps/3d_rec_framework/include/pcl/apps/3d_rec_framework/utils
-COPY file_io.h pcl/io/include/pcl/io
-COPY auto_io.h pcl/io/include/pcl/io
-COPY entropy_range_coder.h pcl/io/include/pcl/compression
-COPY eigen.h pcl/common/include/pcl/common
-COPY pcl_macros.h pcl/common/include/pcl
-COPY bearing_angle_image.h pcl/common/include/pcl/range_image
-COPY ndt_2d.hpp pcl/registration/include/pcl/registration/impl
-COPY min_cut_segmentation.hpp pcl/segmentation/include/pcl/segmentation/impl
-COPY region_growing.hpp pcl/segmentation/include/pcl/segmentation/impl
-COPY spin_image.hpp pcl/features/include/features/impl
-COPY 3dsc.hpp pcl/features/include/pcl/features/impl
-COPY angles.hpp pcl/common/include/pcl/common/impl
+#COPY low_level_io.h pcl/io/include/pcl/io/
+#COPY common_headers.h pcl/common/include/pcl/common
+#COPY bearing_angle_image.cpp pcl/common/src
+#COPY common.h pcl/common/include/pcl/common
+#COPY sac.h pcl/sample_consensus/include/pcl/sample_consensus
+#COPY pcd_grabber.cpp pcl/io/src
+#COPY hdl_grabber.h pcl/io/include/pcl/io
+#COPY io/CMakeLists.txt pcl/io
+#COPY boundary.h pcl/features/include/pcl/features
+#COPY moment_of_inertia_estimation.h pcl/features/include/pcl/features
+#COPY auxiliary.h pcl/recognition/include/pcl/recognition/ransac_based
+#COPY obj_rec_ransac.h pcl/recognition/include/pcl/recognition/ransac_based
+#COPY region_growing.h pcl/segmentation/include/pcl/segmentation
+#COPY permutohedral.h pcl/ml/include/pcl/ml
+#COPY metrics.h pcl/apps/3d_rec_framework/include/pcl/apps/3d_rec_framework/utils
+#COPY file_io.h pcl/io/include/pcl/io
+#COPY auto_io.h pcl/io/include/pcl/io
+#COPY entropy_range_coder.h pcl/io/include/pcl/compression
+#COPY eigen.h pcl/common/include/pcl/common
+#COPY pcl_macros.h pcl/common/include/pcl
+#COPY bearing_angle_image.h pcl/common/include/pcl/range_image
+#COPY ndt_2d.hpp pcl/registration/include/pcl/registration/impl
+#COPY min_cut_segmentation.hpp pcl/segmentation/include/pcl/segmentation/impl
+#COPY region_growing.hpp pcl/segmentation/include/pcl/segmentation/impl
+#COPY spin_image.hpp pcl/features/include/features/impl
+#COPY 3dsc.hpp pcl/features/include/pcl/features/impl
+#COPY angles.hpp pcl/common/include/pcl/common/impl
 
-COPY CMakeLists.txt pcl
+#COPY CMakeLists.txt pcl
 
-RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0
+#RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0
 
 
-RUN cp hwloc/include/*.h /usr/x86_64-w64-mingw32/sys-root/mingw/include
-RUN cp -r hwloc/include/hwloc /usr/x86_64-w64-mingw32/sys-root/mingw/include
-RUN cp hwloc/hwloc/.libs/*.dll /usr/x86_64-w64-mingw32/sys-root/mingw/lib
-RUN cp hwloc/hwloc/.libs/*.dll.a /usr/x86_64-w64-mingw32/sys-root/mingw/lib
+#RUN cp hwloc/include/*.h /usr/x86_64-w64-mingw32/sys-root/mingw/include
+#RUN cp -r hwloc/include/hwloc /usr/x86_64-w64-mingw32/sys-root/mingw/include
+#RUN cp hwloc/hwloc/.libs/*.dll /usr/x86_64-w64-mingw32/sys-root/mingw/lib
+#RUN cp hwloc/hwloc/.libs/*.dll.a /usr/x86_64-w64-mingw32/sys-root/mingw/lib
 
-COPY hpx/util/plugin/detail/dll_windows.hpp hpx/hpx/util/plugin/detail
+#COPY hpx/util/plugin/detail/dll_windows.hpp hpx/hpx/util/plugin/detail
 
 #use binary pcl
 
 COPY binary_pcl /usr/x86_64-w64-mingw32/sys-root/mingw
+
+# let's hope that we could get mingw to demangle msvc symbol correctly
 
 #RUN mkdir build-mingw64-pcl && \
 #cd build-mingw64-pcl && \
@@ -140,9 +147,17 @@ COPY binary_pcl /usr/x86_64-w64-mingw32/sys-root/mingw
 #cd .. && \
 #rm -rf build-mingw64-pcl
 
+#COPY hpx/src/runtime/threads/topology.cpp hpx/src/runtime/threads
+
+#COPY hpx/config.hpp hpx/hpx
+
+COPY cross_file_mingw64.txt /opt/
+
+RUN dnf install -y gcc-c++
+
 #RUN mkdir build-mingw64-hpx && \
 #cd build-mingw64-hpx && \
-#mingw64-cmake ../hpx -GNinja -DHPX_MINGW=TRUE -DHWLOC_ROOT=/usr/x86_64-w64-mingw32/sys-root/mingw/ -DHWLOC_LIBRARY=/usr/x86_64-w64-mingw32/sys-root/mingw/lib -DHWLOC_INCLUDE_DIR=/usr/x86_64-w64-mingw32/sys-root/mingw/include -DHPX_WITH_EXAMPLES=OFF -DHPX_WITH_TESTS=OFF -DHPX_WITH_TESTS_BENCHMARKS=OFF -DHPX_WITH_TESTS_REGRESSIONS=OFF -DHPX_WITH_TESTS_UNIT=OFF -DHPX_WITH_TESTS_EXTERNAL_BUILD=OFF -DHPX_WITH_TESTS_EXAMPLES=OFF -DHPX_WITH_COMPILE_ONLY_TESTS=OFF -DHPX_WITH_FAIL_COMPILE_TESTS=OFF && \
+#mingw64-cmake ../hpx -GNinja -DHPX_MINGW=TRUE -DHWLOC_ROOT=/usr/x86_64-w64-mingw32/sys-root/mingw/ -DHWLOC_LIBRARY=/usr/x86_64-w64-mingw32/sys-root/mingw/lib -DHWLOC_INCLUDE_DIR=/usr/x86_64-w64-mingw32/sys-root/mingw/include -DHPX_WITH_EXAMPLES=OFF -DHPX_WITH_TESTS=OFF -DHPX_WITH_TESTS_BENCHMARKS=OFF -DHPX_WITH_TESTS_REGRESSIONS=OFF -DHPX_WITH_TESTS_UNIT=OFF -DHPX_WITH_TESTS_EXTERNAL_BUILD=OFF -DHPX_WITH_TESTS_EXAMPLES=OFF -DHPX_WITH_COMPILE_ONLY_TESTS=OFF -DHPX_WITH_FAIL_COMPILE_TESTS=OFF -D_WIN32_WINNT=0x0A00 && \
 #ninja && \
 #ninja install && \
 #cd .. && \
