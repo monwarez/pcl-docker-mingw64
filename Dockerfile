@@ -155,6 +155,8 @@ COPY cross_file_mingw64.txt /opt/
 
 RUN dnf install -y gcc-c++
 
+COPY binary_openni2 /usr/x86_64-w64-mingw32/sys-root/mingw
+
 #RUN mkdir build-mingw64-hpx && \
 #cd build-mingw64-hpx && \
 #mingw64-cmake ../hpx -GNinja -DHPX_MINGW=TRUE -DHWLOC_ROOT=/usr/x86_64-w64-mingw32/sys-root/mingw/ -DHWLOC_LIBRARY=/usr/x86_64-w64-mingw32/sys-root/mingw/lib -DHWLOC_INCLUDE_DIR=/usr/x86_64-w64-mingw32/sys-root/mingw/include -DHPX_WITH_EXAMPLES=OFF -DHPX_WITH_TESTS=OFF -DHPX_WITH_TESTS_BENCHMARKS=OFF -DHPX_WITH_TESTS_REGRESSIONS=OFF -DHPX_WITH_TESTS_UNIT=OFF -DHPX_WITH_TESTS_EXTERNAL_BUILD=OFF -DHPX_WITH_TESTS_EXAMPLES=OFF -DHPX_WITH_COMPILE_ONLY_TESTS=OFF -DHPX_WITH_FAIL_COMPILE_TESTS=OFF -D_WIN32_WINNT=0x0A00 && \
