@@ -75,15 +75,18 @@ RUN dnf install -y gcc-c++
 
 #RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.10.0
 
-RUN git clone https://github.com/g-truc/glm glm --branch 0.9.9.7 && \
-mkdir build-mingw64-glm && \
-cd build-mingw64-glm && \
-mingw64-cmake ../glm -GNinja -DGLM_TEST_ENABLE=OFF -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release && \
-ninja && \
-ninja install && \
-cd .. && \
-rm -rf build-mingw64-glm && \
-rm -rf glm
+RUN dnf install -y glm-devel && \
+ln -s /usr/include/glm /usr/x86_64-w64-mingw32/sys-root/mingw/include/glm
+
+#RUN git clone https://github.com/g-truc/glm glm --branch 0.9.8.5 && \
+#mkdir build-mingw64-glm && \
+#cd build-mingw64-glm && \
+#mingw64-cmake ../glm -GNinja -DGLM_TEST_ENABLE=OFF -DCMAKE_CROSSCOMPILING=TRUE -DCMAKE_CROSSCOMPILING_EMULATOR=wine -DCMAKE_BUILD_TYPE=Release && \
+#ninja && \
+#ninja install  | true && \
+#cd .. && \
+#rm -rf build-mingw64-glm && \
+#rm -rf glm
 
 #RUN cp -r glm/glm /usr/x86_64-w64-mingw32/sys-root/mingw/include/glm
 
@@ -92,7 +95,7 @@ rm -rf glm
 RUN rm -rf cgal
 RUN rm -rf build-mingw64-cgal
 
-#COPY glm.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
+COPY glm.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 
 
 #COPY CMakeLists.txt pcl
