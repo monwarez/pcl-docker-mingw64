@@ -73,7 +73,6 @@ RUN cp hwloc/netlocscotch.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfi
 
 RUN dnf install -y gcc-c++
 
-#RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.10.0
 
 RUN dnf install -y glm-devel && \
 ln -s /usr/include/glm /usr/x86_64-w64-mingw32/sys-root/mingw/include/glm
@@ -97,8 +96,11 @@ RUN rm -rf build-mingw64-cgal
 
 COPY glm.pc /usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig/
 
+RUN dnf remove -y meson && dnf install -y ninja-build && pip3 install meson
 
-#COPY CMakeLists.txt pcl
+RUN git clone https://github.com/PointCloudLibrary/pcl pcl --branch pcl-1.10.0
+
+COPY CMakeLists.txt pcl
 
 #RUN git clone https://github.com/STEllAR-GROUP/hpx hpx --branch 1.3.0
 
@@ -152,12 +154,11 @@ COPY angles.hpp                     /usr/x86_64-w64-mingw32/sys-root/mingw/inclu
 
 #COPY hpx/config.hpp hpx/hpx
 
-COPY cross_file_mingw64.txt /opt/
+#COPY cross_file_mingw64.txt /opt/
 
 
-COPY binary_openni2 /usr/x86_64-w64-mingw32/sys-root/mingw
+#COPY binary_openni2 /usr/x86_64-w64-mingw32/sys-root/mingw
 
-RUN dnf remove -y meson && dnf install -y ninja-build && pip3 install meson
 
 #RUN mkdir build-mingw64-hpx && \
 #cd build-mingw64-hpx && \
